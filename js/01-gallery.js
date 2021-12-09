@@ -25,7 +25,7 @@ function createGalleryMarkup(galleryItems) {
     .join('');
 }
 
-function onGalleryContainerClick(evt) {
+    function onGalleryContainerClick(evt) {
     evt.preventDefault();
 
     const isGalleryItemEl = evt.target.classList.contains('gallery__image');
@@ -39,13 +39,17 @@ function onGalleryContainerClick(evt) {
      `);
         
     instance.show(() => {
-        document.addEventListener("keydown", evt => {
-            const ESC_KEY_CODE = 'Escape';
-            const isEscKey = evt.code === ESC_KEY_CODE;
-           
-            if (isEscKey) {
-                instance.close();
-            }
-        });
+      document.addEventListener("keydown", onEscKeyPress);
     });
+      
+    function onEscKeyPress (evt) {
+      const ESC_KEY_CODE = 'Escape';
+      const isEscKey = evt.code === ESC_KEY_CODE;
+                       
+      if (isEscKey) {
+        instance.close(() => {
+          document.removeEventListener("keydown", onEscKeyPress);
+          });
+        }
+    }
 }
